@@ -36,8 +36,8 @@ export const signinController = async (req, res, next) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, // required for HTTPS
-        sameSite: "Lax",
+        secure: true, // ✅ must be true on HTTPS
+        sameSite: "none", // ✅ required for cross-site cookies
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       })
       .json(userData);
@@ -78,8 +78,8 @@ export const googleController = async (req, res, next) => {
         .status(200)
         .cookie("token", token, {
           httpOnly: true,
-          secure: false, // required for HTTPS
-          sameSite: "Lax",
+          secure: true, // ✅ must be true on HTTPS
+          sameSite: "none", // ✅ required for cross-site cookies
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         })
         .json(userData);
