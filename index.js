@@ -41,6 +41,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/listing", listingRoutes);
 
+app.get("/", (req, res) => {
+  res.send("hi I am backend");
+});
+
 app.use((err, req, res, next) => {
   console.error("Caught Error:", err);
   const statusCode = err.statusCode || 500;
