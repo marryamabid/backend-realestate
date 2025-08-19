@@ -65,32 +65,25 @@ export const getSearchListingController = async (req, res, next) => {
     const startIndex = req.query.startIndex
       ? parseInt(req.query.startIndex)
       : 0;
-
-    // ✅ convert string query to boolean or $in
-    let offer =
-      req.query.offer === undefined || req.query.offer === "false"
-        ? { $in: [false, true] }
-        : req.query.offer === "true";
-
-    let furnished =
-      req.query.furnished === undefined || req.query.furnished === "false"
-        ? { $in: [false, true] }
-        : req.query.furnished === "true";
-
-    let parking =
-      req.query.parking === undefined || req.query.parking === "false"
-        ? { $in: [false, true] }
-        : req.query.parking === "true";
-
-    let type =
-      req.query.type === undefined || req.query.type === "all"
-        ? { $in: ["sale", "rent"] }
-        : req.query.type;
-
+    let offer = req.query.offer;
+    if (offer === undefined || offer === "false") {
+      offer = { $in: [false, true] };
+    }
+    let furnished = req.query.furnished;
+    if (furnished === undefined || furnished === "false") {
+      furnished = { $in: [false, true] };
+    }
+    let parking = req.query.parking;
+    if (parking === undefined || parking === "false") {
+      parking = { $in: [false, true] };
+    }
+    let type = req.query.type;
+    if (type === undefined || type === "all") {
+      type = { $in: ["sale", "rent"] };
+    }
     const searchItem = req.query.searchItem || "";
-    const sortField = req.query.sort || "createdAt";
-    const order = req.query.order === "asc" ? 1 : -1; // ✅ fix: numeric order
-
+    const sort = req.query.sort || "createdAt";
+    const order = req.query.order || "desc";
     const listings = await Listing.find({
       name: { $regex: searchItem, $options: "i" },
       offer,
@@ -98,13 +91,11 @@ export const getSearchListingController = async (req, res, next) => {
       parking,
       type,
     })
-      .sort({ [sortField]: order })
+      .sort({ [sort]: order })
       .limit(limit)
       .skip(startIndex);
-
     res.status(200).json(listings);
   } catch (error) {
-    console.error("Search error:", error); // ✅ log for debugging
-    next(error); // pass error to global handler
+    next(errorHandler(500, error.message));
   }
 };
