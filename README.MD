@@ -43,16 +43,17 @@ It provides APIs for authentication, user profiles, and property listings.
 ## ⚙️ Setup & Installation
 
 1. Clone the repository:
-   ```bash
+   ```
    git clone https://github.com/marryamabid/backend-realestate.git
-   cd HomeLinker-backend
    ```
 ````
 
 Install dependencies:
 
-````
-npm install```
+```
+npm install
+```
+
 API Endpoints
 🔑 Auth
 
@@ -83,4 +84,3 @@ PUT /api/listing/:id – Update listing
 DELETE /api/listing/:id – Delete listing
 
 GET /api/listing/search – Search listings
-````
